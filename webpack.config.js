@@ -9,7 +9,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
     // directory where compiled assets will be stored
-    .setOutputPath('public/build/')
+    .setOutputPath('build/')
     // public path used by the web server to access the output path
     .setPublicPath('/build')
     // only needed for CDN's or sub-directory deploy
@@ -64,7 +64,7 @@ config.plugins.push(
             },
             files: [ // watch on changes
                 {
-                    match: ['public/build/**/*.js'],
+                    match: ['build/**/*.js'],
                     fn: function (event, file) {
                         if (event === 'change') {
                             const bs = require('browser-sync').get('bs-webpack-plugin');
