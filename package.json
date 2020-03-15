@@ -1,0 +1,52 @@
+{
+  "name": "es6-plugin-system",
+  "version": "0.0.1",
+  "description": "Es6 Plugin System - Vanilla Javascript",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Brian Schäffner",
+    "role": "Developer"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.5.5",
+    "@babel/core": "7.5.5",
+    "@babel/plugin-proposal-class-properties": "7.5.5",
+    "@babel/plugin-transform-object-assign": "7.2.0",
+    "@babel/polyfill": "7.4.4",
+    "@babel/preset-env": "7.5.5",
+    "@symfony/webpack-encore": "^0.28.3",
+    "autoprefixer": "9.6.1",
+    "babel-eslint": "10.0.2",
+    "babel-loader": "8.0.6",
+    "browser-sync": "^2.26.7",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "core-js": "^3.0.0",
+    "deepmerge": "4.0.0",
+    "element-closest": "^3.0.2",
+    "eslint": "^5.16.0",
+    "eslint-loader": "^2.1.0",
+    "form-association-polyfill": "2.0.2",
+    "formdata-polyfill": "3.0.18",
+    "imports-loader": "^0.8.0",
+    "jest": "^25.1.0",
+    "jest-junit": "^10.0.0",
+    "jest-plugin-clock": "^2.9.0",
+    "mdn-polyfills": "5.18.0",
+    "node-sass": "^4.9.3",
+    "object-fit-polyfill": "0.1.0",
+    "picturefill": "3.0.3",
+    "postcss-loader": "3.0.0",
+    "postcss-pxtorem": "4.0.1",
+    "query-string": "6.8.2",
+    "regenerator-runtime": "^0.13.2",
+    "sass-loader": "^7.1.0",
+    "webpack-notifier": "^1.6.0"
+  },
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev --verbose",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
+  }
+}

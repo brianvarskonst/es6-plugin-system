@@ -1,0 +1,11 @@
+{
+  "entrypoints": {
+    "main": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendors~main.js",
+        "/build/main.js"
+      ]
+    }
+  }
+}
