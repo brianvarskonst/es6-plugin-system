@@ -1,5 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -26,6 +26,14 @@ Encore
      */
     .addEntry('main', './src/js/main.js')
 
+    .enableTypeScriptLoader()
+    .enableSassLoader()
+
+    .enableForkedTypeScriptTypesChecking()
+    .enablePostCssLoader()
+
+    .addPlugin(new DependencyExtractionWebpackPlugin())
+
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
 
@@ -41,7 +49,6 @@ Encore
      * https://symfony.com/doc/current/frontend.html#adding-more-features
      */
     .cleanupOutputBeforeBuild()
-    .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
@@ -53,34 +60,5 @@ config.watchOptions = {
     poll: true,
     ignored: /node_modules/
 };
-
-config.plugins.push(
-    new BrowserSyncPlugin(
-        {
-            host: 'localhost',
-            port: '3000',
-            server: {
-                "baseDir": "./"
-            },
-            files: [ // watch on changes
-                {
-                    match: ['build/**/*.js'],
-                    fn: function (event, file) {
-                        if (event === 'change') {
-                            const bs = require('browser-sync').get('bs-webpack-plugin');
-
-                            bs.reload();
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            reload: false, // this allow webpack server to take care of instead browser sync
-            name: 'bs-webpack-plugin',
-        },
-    )
-);
-
 
 module.exports = config;
