@@ -1,8 +1,8 @@
 name: plugin-system
 type: php
 docroot: ""
-php_version: "7.3"
-webserver_type: nginx-fpm
+php_version: "8.0"
+webserver_type: apache-fpm
 router_http_port: "80"
 router_https_port: "443"
 xdebug_enabled: false
