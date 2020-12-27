@@ -12,3 +12,10 @@ yarn.lock
 
 ### phpstorm
 .idea
+
+### Docker environment
+.docker
+.logs
+bin/php-shell
+docker-compose.yml
+docker-compose.override.yml
