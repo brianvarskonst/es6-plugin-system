@@ -2,3 +2,13 @@
 /node_modules/
 yarn.lock
 .ideagit stat
+
+.DS_Store
+
+### ddev
+.ddev/homeadditions/.composer/auth.json
+/local/
+!/local/.gitignore
+
+### phpstorm
+.idea
