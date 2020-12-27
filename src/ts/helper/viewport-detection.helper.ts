@@ -1,11 +1,15 @@
-import Debouncer from './debouncer.helper';
+import Debouncer from './debouncer.helper.ts';
 
 /**
  * Viewport Detection
  */
-const RESIZE_DEBOUNCE_TIME = 200;
 
 export default class ViewportDetection {
+
+    public readonly RESIZE_DEBOUNCE_TIME = 200;
+
+    private previousViewport: string;
+    private currentViewport: string;
 
     /**
      * Constructor
@@ -13,21 +17,21 @@ export default class ViewportDetection {
     constructor() {
         this.previousViewport = null;
         this.currentViewport = ViewportDetection.getCurrentViewport();
-        this._registerEvents();
+
+        this.registerEvents();
     }
 
     /**
      * Register events
-     * @private
      */
-    _registerEvents() {
+    public registerEvents(): void {
         // add listener on DOMContentLoaded to initially register viewport events
-        window.addEventListener('DOMContentLoaded', this._onDOMContentLoaded.bind(this));
+        window.addEventListener('DOMContentLoaded', this.onDOMContentLoaded.bind(this));
 
         // add listener to the window resize events
         window.addEventListener(
             'resize',
-            Debouncer.debounce(this._onResize.bind(this), RESIZE_DEBOUNCE_TIME),
+            Debouncer.debounce(this.onResize.bind(this), this.RESIZE_DEBOUNCE_TIME),
             {
                 capture: true,
                 passive: true,
@@ -38,23 +42,23 @@ export default class ViewportDetection {
     /**
      * Dispatch the custom viewport events immediately after DOM content
      * has been loaded to allow the execution of other JS code via listening the events
-     * @private
      */
-    _onDOMContentLoaded() {
-        this._dispatchEvents();
+    private onDOMContentLoaded(): void
+    {
+        this.dispatchEvents();
     }
 
     /**
      * Dispatch the custom viewport event after window resizing
      * to allow the execution of other JS code via listening the events
-     * @private
      */
-    _onResize() {
-        if (this._viewportHasChanged(ViewportDetection.getCurrentViewport())) {
-            this._dispatchEvents();
+    private onResize(): void
+    {
+        if (this.viewportHasChanged(ViewportDetection.getCurrentViewport())) {
+            this.dispatchEvents();
 
             // dispatch event that a viewport change has taken place
-            this._dispatchViewportEvent('Viewport/hasChanged');
+            this.dispatchViewportEvent('Viewport/hasChanged');
         }
     }
 
@@ -62,28 +66,40 @@ export default class ViewportDetection {
      * Dispatch custom events for every single viewport
      * @private
      */
-    _dispatchEvents() {
+    private dispatchEvents(): void
+    {
         // dispatch specific events for each single viewport
-        if (ViewportDetection.isXS()) {
-            this._dispatchViewportEvent('Viewport/isXS');
-        } else if (ViewportDetection.isSM()) {
-            this._dispatchViewportEvent('Viewport/isSM');
-        } else if (ViewportDetection.isMD()) {
-            this._dispatchViewportEvent('Viewport/isMD');
-        } else if (ViewportDetection.isLG()) {
-            this._dispatchViewportEvent('Viewport/isLG');
-        } else if (ViewportDetection.isXL()) {
-            this._dispatchViewportEvent('Viewport/isXL');
+        switch (true) {
+            case ViewportDetection.isXS():
+                this.dispatchViewportEvent('Viewport/isXS');
+                break;
+            case ViewportDetection.isSM():
+                this.dispatchViewportEvent('Viewport/isSM');
+                break;
+            case ViewportDetection.isMD():
+                this.dispatchViewportEvent('Viewport/isMD');
+                break;
+            case ViewportDetection.isLG():
+                this.dispatchViewportEvent('Viewport/isLG');
+                break;
+            case ViewportDetection.isXL():
+                this.dispatchViewportEvent('Viewport/isXL');
+                break;
+            default:
+                break;
+
         }
     }
 
     /**
      * Determine whether the the viewport has changed
+     *
      * @param newViewport
+     *
      * @returns {boolean}
-     * @private
      */
-    _viewportHasChanged(newViewport) {
+    private viewportHasChanged(newViewport): boolean
+    {
         // determine whether the viewport has changed
         const hasChanged = newViewport !== this.currentViewport;
 
@@ -99,10 +115,10 @@ export default class ViewportDetection {
      * Dispatch event with additional data
      * including the previous viewport
      * @param {string} eventName
-     * @private
      */
-    _dispatchViewportEvent(eventName) {
-        document.$emitter.publish(eventName, {
+    private dispatchViewportEvent(eventName): void
+    {
+        window.$emitter.publish(eventName, {
             previousViewport: this.previousViewport,
         });
     }
@@ -111,7 +127,8 @@ export default class ViewportDetection {
      * Determine whether the current viewport is XS
      * @returns {boolean}
      */
-    static isXS() {
+    public static isXS(): boolean
+    {
         return (ViewportDetection.getCurrentViewport() === 'XS');
     }
 
@@ -119,7 +136,8 @@ export default class ViewportDetection {
      * Determine whether the current viewport is SM
      * @returns {boolean}
      */
-    static isSM() {
+    public static isSM(): boolean
+    {
         return (ViewportDetection.getCurrentViewport() === 'SM');
     }
 
@@ -127,7 +145,8 @@ export default class ViewportDetection {
      * Determine whether the current viewport is MD
      * @returns {boolean}
      */
-    static isMD() {
+    public static isMD(): boolean
+    {
         return (ViewportDetection.getCurrentViewport() === 'MD');
     }
 
@@ -135,7 +154,8 @@ export default class ViewportDetection {
      * Determine whether the current viewport is LG
      * @returns {boolean}
      */
-    static isLG() {
+    public static isLG(): boolean
+    {
         return (ViewportDetection.getCurrentViewport() === 'LG');
     }
 
@@ -143,17 +163,21 @@ export default class ViewportDetection {
      * Determine whether the current viewport is XL
      * @returns {boolean}
      */
-    static isXL() {
+    public static isXL(): boolean
+    {
         return (ViewportDetection.getCurrentViewport() === 'XL');
     }
 
     /**
      * Determine the current viewport value set in the HTML::before element,
      * remove all quotes and convert it to uppercase
+     *
      * @returns {string}
      */
-    static getCurrentViewport() {
+    public static getCurrentViewport(): string
+    {
         const viewport = window.getComputedStyle(document.documentElement, ':before').content;
+
         return viewport.replace(/['"]+/g, '').toUpperCase();
     }
 }

@@ -4,7 +4,8 @@ export default class DeviceDetection {
      * Returns whether the current device is a touch device
      * @returns {boolean}
      */
-    static isTouchDevice() {
+    static isTouchDevice(): boolean
+    {
         return ('ontouchstart' in document.documentElement);
     }
 
@@ -12,7 +13,8 @@ export default class DeviceDetection {
      * Returns whether the current userAgent is an IOS device
      * @returns {boolean}
      */
-    static isIOSDevice() {
+    static isIOSDevice(): boolean
+    {
         return (DeviceDetection.isIPhoneDevice() || DeviceDetection.isIPadDevice());
     }
 
@@ -20,7 +22,8 @@ export default class DeviceDetection {
      * Returns if we're dealing with a native Windows browser
      * @returns {boolean}
      */
-    static isNativeWindowsBrowser() {
+    static isNativeWindowsBrowser(): boolean
+    {
         return (DeviceDetection.isIEBrowser() || DeviceDetection.isEdgeBrowser());
     }
 
@@ -28,7 +31,8 @@ export default class DeviceDetection {
      * Returns whether the current userAgent is an iPhone device
      * @returns {boolean}
      */
-    static isIPhoneDevice() {
+    static isIPhoneDevice(): boolean
+    {
         const userAgent = navigator.userAgent;
         return !!userAgent.match(/iPhone/i);
     }
@@ -37,7 +41,8 @@ export default class DeviceDetection {
      * Returns whether the current userAgent is an iPad device
      * @returns {boolean}
      */
-    static isIPadDevice() {
+    static isIPadDevice(): boolean
+    {
         const userAgent = navigator.userAgent;
         return !!userAgent.match(/iPad/i);
     }
@@ -46,7 +51,8 @@ export default class DeviceDetection {
      * Returns if we're dealing with the Internet Explorer.
      * @returns {boolean}
      */
-    static isIEBrowser() {
+    static isIEBrowser(): boolean
+    {
         const userAgent = navigator.userAgent.toLowerCase();
         return userAgent.indexOf('msie') !== -1 || !!navigator.userAgent.match(/Trident.*rv:\d+\./);
     }
@@ -55,7 +61,8 @@ export default class DeviceDetection {
      * Returns if we're dealing with the Windows Edge browser.
      * @returns {boolean}
      */
-    static isEdgeBrowser() {
+    static isEdgeBrowser(): boolean
+    {
         const userAgent = navigator.userAgent;
         return !!userAgent.match(/Edge\/\d+/i);
     }
@@ -64,7 +71,8 @@ export default class DeviceDetection {
      * Returns a list of css classes with the boolean result of all device detection functions.
      * @returns {object}
      */
-    static getList() {
+    static getList(): object
+    {
         return {
             'is-touch': DeviceDetection.isTouchDevice(),
             'is-ios': DeviceDetection.isIOSDevice(),

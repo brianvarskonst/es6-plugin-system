@@ -15,7 +15,7 @@ export default class Iterator {
      *
      * @returns {*}
      */
-    static iterate(source, callback) {
+    public static iterate(source, callback) {
         if (source instanceof Map) {
             return source.forEach(callback);
         }

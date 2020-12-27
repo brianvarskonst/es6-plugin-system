@@ -6,9 +6,11 @@ export default class DomAccess {
      * Returns whether or not the element is an HTML node
      *
      * @param {HTMLElement} element
+     *
      * @returns {boolean}
      */
-    static isNode(element) {
+    static isNode(element: Document|Window|HTMLElement): boolean
+    {
         if (typeof element !== 'object' || element === null) {
             return false;
         }
@@ -22,27 +24,37 @@ export default class DomAccess {
 
     /**
      * Returns if the given element has the requested attribute/property
+     *
      * @param {HTMLElement} element
      * @param {string} attribute
      */
-    static hasAttribute(element, attribute) {
+    static hasAttribute(element: HTMLElement, attribute: string): boolean
+    {
         if (!DomAccess.isNode(element)) {
             throw new Error('The element must be a valid HTML Node!');
         }
 
-        if (typeof element.hasAttribute !== 'function') return false;
+        if (typeof element.hasAttribute !== 'function') {
+            return false;
+        }
 
         return element.hasAttribute(attribute);
     }
 
     /**
      * Returns the value of a given element's attribute/property
+     *
      * @param {HTMLElement|EventTarget} element
      * @param {string} attribute
      * @param {boolean} strict
+     *
      * @returns {*|this|string}
      */
-    static getAttribute(element, attribute, strict = true) {
+    static getAttribute(
+        element: HTMLElement | EventTarget,
+        attribute: string,
+        strict: boolean = true
+    ): any {
         if (strict && DomAccess.hasAttribute(element, attribute) === false) {
             throw new Error(`The required property "${attribute}" does not exist!`);
         }
@@ -64,11 +76,17 @@ export default class DomAccess {
      * @param {HTMLElement|EventTarget} element
      * @param {string} key
      * @param {boolean} strict
+     *
      * @returns {*|this|string}
      */
-    static getDataAttribute(element, key, strict = true) {
+    static getDataAttribute(
+        element: HTMLElement | EventTarget,
+        key: string,
+        strict: boolean = true
+    ): any {
         const keyWithoutData = key.replace(/^data(|-)/, '');
         const parsedKey = StringHelper.toLowerCamelCase(keyWithoutData, '-');
+
         if (!DomAccess.isNode(element)) {
             if (strict) {
                 throw new Error('The passed node is not a valid HTML Node!');
@@ -100,12 +118,18 @@ export default class DomAccess {
 
     /**
      * Returns the selected element of a defined parent node
+     *
      * @param {HTMLElement|EventTarget} parentNode
      * @param {string} selector
      * @param {boolean} strict
+     *
      * @returns {HTMLElement}
      */
-    static querySelector(parentNode, selector, strict = true) {
+    static querySelector(
+        parentNode: HTMLElement | EventTarget,
+        selector: string ,
+        strict: boolean = true
+    ): HTMLElement {
         if (strict && !DomAccess.isNode(parentNode)) {
             throw new Error('The parent node is not a valid HTML Node!');
         }
@@ -125,9 +149,14 @@ export default class DomAccess {
      * @param {HTMLElement|EventTarget} parentNode
      * @param {string} selector
      * @param {boolean} strict
+     *
      * @returns {NodeList|false}
      */
-    static querySelectorAll(parentNode, selector, strict = true) {
+    static querySelectorAll(
+        parentNode: HTMLElement | EventTarget,
+        selector: string,
+        strict: boolean = true
+    ): NodeList|boolean {
         if (strict && !DomAccess.isNode(parentNode)) {
             throw new Error('The parent node is not a valid HTML Node!');
         }

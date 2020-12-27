@@ -1,8 +1,8 @@
 import deepmerge from 'deepmerge';
-import PluginRegistry from './plugin.registry';
-import DomAccess from './../helper/dom-access.helper';
+import PluginContainer from './plugin.container.ts';
+import DomAccess from '../helper/dom-access.helper.ts';
 import './plugin.config.manager';
-import Iterator from './../helper/iterator.helper';
+import Iterator from '../helper/iterator.helper.ts';
 
 /**
  * this file handles the plugin functionality of shopware
@@ -60,7 +60,7 @@ import Iterator from './../helper/iterator.helper';
 class PluginManagerSingleton {
 
     constructor() {
-        this._registry = new PluginRegistry();
+        this._registry = new PluginContainer();
     }
 
     /**

@@ -3,8 +3,10 @@ import DomAccess from './dom-access.helper';
 
 class ElementReplaceHelperSingleton {
 
+    private domParser: DOMParser;
+
     constructor() {
-        this._domParser = new DOMParser();
+        this.domParser = new DOMParser();
     }
 
     /**
@@ -16,17 +18,18 @@ class ElementReplaceHelperSingleton {
      *
      * @private
      */
-    replaceFromMarkup(markup, selectors, strict = true) {
+    public replaceFromMarkup(
+        markup: string | HTMLElement,
+        selectors: string[],
+        strict: boolean = true
+    ) {
         let src = markup;
+
         if (typeof src === 'string') {
-            src = this._createMarkupFromString(src);
+            src = this.createMarkupFromString(src);
         }
 
-        if (typeof selectors === 'string') {
-            selectors = [selectors];
-        }
-
-        this._replaceSelectors(src, selectors, strict);
+        this.replaceSelectors(src, selectors, strict);
     }
 
     /**
@@ -38,7 +41,11 @@ class ElementReplaceHelperSingleton {
      *
      * @returns {boolean}
      */
-    replaceElement(src, target, strict = true) {
+    public replaceElement(
+        src: NodeList|HTMLElement|string,
+        target: NodeList|HTMLElement|string,
+        strict: boolean = true
+    ) {
         if (typeof src === 'string') {
             src = DomAccess.querySelectorAll(document, src, strict);
         }
@@ -70,6 +77,7 @@ class ElementReplaceHelperSingleton {
         }
 
         target.innerHTML = src.innerHTML;
+
         return true;
     }
 
@@ -78,13 +86,14 @@ class ElementReplaceHelperSingleton {
      * with the ones in the source
      *
      * @param {HTMLElement} src
-     * @param {Array} selectors
+     * @param {string[]} selectors
      * @param {boolean} strict
      *
      * @private
      */
-    _replaceSelectors(src, selectors, strict) {
-        Iterator.iterate(selectors, (selector) => {
+    private replaceSelectors(src: HTMLElement, selectors: string[], strict: boolean): void
+    {
+        Iterator.iterate(selectors, selector => {
             const srcElements = DomAccess.querySelectorAll(src, selector, strict);
             const targetElements = DomAccess.querySelectorAll(document, selector, strict);
 
@@ -96,13 +105,17 @@ class ElementReplaceHelperSingleton {
      * returns a dom element parsed from the passed string
      *
      * @param {string} string
+     * @param {SupportedType} type
      *
-     * @returns {HTMLElement}
+     * @returns {Document | HTMLElement}
      *
      * @private
      */
-    _createMarkupFromString(string) {
-        return this._domParser.parseFromString(string, 'text/html');
+    private createMarkupFromString(
+        string: string,
+        type: SupportedType = 'text/html'
+    ): Document | HTMLElement {
+        return this.domParser.parseFromString(string, type);
     }
 }
 
@@ -118,11 +131,15 @@ export default class ElementReplaceHelper {
      * replace all elements from the target
      *
      * @param {string|HTMLElement} markup
-     * @param {array|string} selectors
+     * @param {string[]} selectors
      * @param {boolean} strict
      *
      */
-    static replaceFromMarkup(markup, selectors, strict) {
+    static replaceFromMarkup(
+        markup: string | HTMLElement,
+        selectors: string[],
+        strict: boolean
+    ) {
         ElementReplaceHelperInstance.replaceFromMarkup(markup, selectors, strict);
     }
 
@@ -135,7 +152,11 @@ export default class ElementReplaceHelper {
      *
      * @returns {boolean}
      */
-    static replaceElement(src, target, strict) {
+    static replaceElement(
+        src: NodeList|HTMLElement|string,
+        target: NodeList|HTMLElement|string,
+        strict: boolean
+    ) {
         return ElementReplaceHelperInstance.replaceElement(src, target, strict);
     }
 }

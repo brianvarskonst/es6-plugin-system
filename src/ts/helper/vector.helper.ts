@@ -11,6 +11,9 @@ function argsToVector(args) {
 }
 
 class Vector {
+
+    private entries: [string, number];
+
     /**
      * @param {Array<Number>}args
      */
@@ -24,28 +27,51 @@ class Vector {
         });
     }
 
-    get dimension() {
+    public get dimension() {
         return this.entries.length;
     }
 
-    validateDimensions(vectorB) {
+    public validateDimensions(vectorB) {
         if (this.dimension !== vectorB.dimension) {
             throw new Error(`[Vector] dimension mismatch expected ${this.dimension} got ${vectorB.dimension}`);
         }
     }
 
     /* Make common entry names available */
-    get x() { return this.entries[0]; }
-    set x(x) { this.entries[0] = x; }
+    get x() {
+        return this.entries[0];
+    }
 
-    get y() { return this.entries[1]; }
-    set y(y) { if (this.dimension > 1) this.entries[1] = y; }
+    set x(x) {
+        this.entries[0] = x;
+    }
 
-    get z() { return this.entries[2]; }
-    set z(z) { if (this.dimension > 2) this.entries[2] = z; }
+    get y() {
+        return this.entries[1];
+    }
+    set y(y) {
+        if (this.dimension > 1) {
+            this.entries[1] = y;
+        }
+    }
 
-    get w() { return this.entries[3]; }
-    set w(w) { if (this.dimension > 3) this.entries[3] = w; }
+    get z() {
+        return this.entries[2];
+    }
+    set z(z) {
+        if (this.dimension > 2) {
+            this.entries[2] = z;
+        }
+    }
+
+    get w() {
+        return this.entries[3];
+    }
+    set w(w) {
+        if (this.dimension > 3) {
+            this.entries[3] = w;
+        }
+    }
 
     /**
      * creates a new vector from a given vector or vector entries
@@ -57,6 +83,7 @@ class Vector {
     set(...args) {
         const other = argsToVector(args);
         this.validateDimensions(other);
+
         return new this.constructor(...other.entries);
     }
 
@@ -234,6 +261,7 @@ class Vector2 extends Vector {
      */
     angle() {
         const angle = Math.atan2(this.y, this.x) * (180 / Math.PI);
+
         return (angle + 360) % 360;
     }
 }

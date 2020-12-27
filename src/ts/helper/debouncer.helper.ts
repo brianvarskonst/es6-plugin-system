@@ -12,7 +12,7 @@ export default class Debouncer {
      *
      * @returns {Function}
      */
-    static debounce(callback, delay, immediate = false) {
+    static debounce(callback: Function, delay: number, immediate: boolean = false) {
         let timeout;
 
         return (...args) => {

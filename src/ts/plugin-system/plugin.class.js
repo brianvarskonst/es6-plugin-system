@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
-import DomAccess from './../helper/dom-access.helper';
-import StringHelper from './../helper/string.helper';
-import NativeEventEmitter from './../helper/emitter.helper';
+import DomAccess from '../helper/dom-access.helper.ts';
+import StringHelper from '../helper/string.helper.ts';
+import NativeEventEmitter from '../helper/event/emitter.helper.ts';
 
 /**
  * Plugin Base class

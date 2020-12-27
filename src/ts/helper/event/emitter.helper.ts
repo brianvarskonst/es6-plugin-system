@@ -1,4 +1,30 @@
-export default class NativeEventEmitter {
+import {EventEmitter} from "./emitter.interface";
+import {NativeListenerInterface} from "./listener.interface";
+
+export default class NativeEventEmitter implements EventEmitter {
+
+    public _el: Document|HTMLElement;
+    public _listeners;
+
+    get el(): Document|HTMLElement {
+        return this._el;
+    }
+
+    set el(value: Document|HTMLElement) {
+        this._el = value;
+    }
+
+    get listeners() {
+        return this._listeners;
+    }
+
+    /**
+     * @param {{splitEventName: string, opts: object, cb: Function}} value
+     */
+    set listeners(value: object) {
+        this._listeners.push(value);
+    }
+
     /**
      * Event Emitter which works with the provided DOM element. The class isn't meant to be
      * extended. It should rather being used as a mixin component to provide the ability to
@@ -32,8 +58,9 @@ export default class NativeEventEmitter {
      * @constructor
      * @param {Document|HTMLElement} [el = document]
      */
-    constructor(el = document) {
-        this._el = el;
+    constructor(el: Document|HTMLElement = document)
+    {
+        this._el = el
         el.$emitter = this;
         this._listeners = [];
     }
@@ -43,42 +70,48 @@ export default class NativeEventEmitter {
      * The data are accessible in the event handler in `event.detail` which represents the standard
      * implementation.
      */
-    publish(eventName, detail = {}) {
+    public publish(eventName: string, detail: object = {}): void
+    {
         const event = new CustomEvent(eventName, {
             detail,
         });
 
-        this.el.dispatchEvent(event);
+        this._el.dispatchEvent(event);
     }
 
     /**
      * Subscribes to an event and adds a listener.
      *
-     * @param {String} eventName
-     * @param {Function} callback
-     * @param {Object} [opts = {}]
+     * @param {NativeListenerInterface} listener
      */
-    subscribe(eventName, callback, opts = {}) {
+    public subscribe(listener: NativeListenerInterface): boolean
+    {
         const emitter = this;
-        const splitEventName = eventName.split('.');
-        let cb = opts.scope ? callback.bind(opts.scope) : callback;
+        const splitEventName = listener.eventName.split('.');
+        const context = listener.opts;
+        const callback = listener.callback;
+
+        let cb = context.scope ? callback.bind(context.scope) : callback;
 
         // Support for listeners which are fired once
-        if (opts.once && opts.once === true) {
+        if (context.once && context.once === true) {
             const onceCallback = cb;
+
             cb = function onceListener(event) {
-                emitter.unsubscribe(eventName);
+                emitter.unsubscribe(listener.eventName);
                 onceCallback(event);
             };
         }
 
-        this.el.addEventListener(splitEventName[0], cb);
+        this._el.addEventListener(splitEventName[0], cb);
 
-        this.listeners.push({
-            splitEventName,
-            opts,
-            cb,
-        });
+        this.listeners =
+            {
+                splitEventName,
+                context,
+                cb,
+            }
+        ;
 
         return true;
     }
@@ -87,18 +120,24 @@ export default class NativeEventEmitter {
      * Removes an event listener.
      *
      * @param {String} eventName
+     *
+     * @return {boolean}
      */
-    unsubscribe(eventName) {
+    public unsubscribe(eventName: string): boolean
+    {
         const splitEventName = eventName.split('.');
-        this.listeners = this.listeners.reduce((accumulator, listener) => {
+
+        this._listeners = this._listeners.reduce((accumulator, listener) => {
             const foundEvent = listener.splitEventName.sort().toString() === splitEventName.sort().toString();
 
             if (foundEvent) {
-                this.el.removeEventListener(listener.splitEventName[0], listener.cb);
+                this._el.removeEventListener(listener.splitEventName[0], listener.cb);
+
                 return accumulator;
             }
 
             accumulator.push(listener);
+
             return accumulator;
         }, []);
 
@@ -110,30 +149,16 @@ export default class NativeEventEmitter {
      *
      * @return {boolean}
      */
-    reset() {
+    public reset(): boolean
+    {
         // Loop through the event listener and remove them from the element
-        this.listeners.forEach((listener) => {
-            this.el.removeEventListener(listener.splitEventName[0], listener.cb);
+        this._listeners.forEach((listener) => {
+            this._el.removeEventListener(listener.splitEventName[0], listener.cb);
         });
 
         // Reset registry
-        this.listeners = [];
+        this._listeners = [];
+
         return true;
-    }
-
-    get el() {
-        return this._el;
-    }
-
-    set el(value) {
-        this._el = value;
-    }
-
-    get listeners() {
-        return this._listeners;
-    }
-
-    set listeners(value) {
-        this._listeners = value;
     }
 }

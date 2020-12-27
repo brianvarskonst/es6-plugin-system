@@ -3,10 +3,10 @@ export default class StringHelper {
      * turns first character of word to uppercase
      *
      * @param {string} string
+     *
      * @returns {string}
-     * @private
      */
-    static ucFirst(string) {
+    public static ucFirst(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
@@ -15,10 +15,10 @@ export default class StringHelper {
      * turns first character of string to uppercase
      *
      * @param {string} string
+     *
      * @returns {string}
-     * @private
      */
-    static lcFirst(string) {
+    public static lcFirst(string) {
         return string.charAt(0).toLowerCase() + string.slice(1);
     }
 
@@ -27,9 +27,10 @@ export default class StringHelper {
      * into a dash case string
      *
      * @param string
+     *
      * @returns {string}
      */
-    static toDashCase(string) {
+    public static toDashCase(string) {
         return string.replace(/([A-Z])/g, '-$1').replace(/^-/, '').toLowerCase();
     }
 
@@ -40,7 +41,7 @@ export default class StringHelper {
      *
      * @returns {string}
      */
-    static toLowerCamelCase(string, separator) {
+    public static toLowerCamelCase(string, separator) {
         const upperCamelCase = StringHelper.toUpperCamelCase(string, separator);
         return StringHelper.lcFirst(upperCamelCase);
     }
@@ -52,7 +53,7 @@ export default class StringHelper {
      *
      * @returns {string}
      */
-    static toUpperCamelCase(string, separator) {
+    public static toUpperCamelCase(string, separator) {
         if (!separator) {
             return StringHelper.ucFirst(string.toLowerCase());
         }
@@ -66,9 +67,10 @@ export default class StringHelper {
      *
      * @param value
      * @returns {*}
+     *
      * @private
      */
-    static parsePrimitive(value) {
+    public static parsePrimitive(value) {
         try {
             // replace comma with dot
             // if value only contains numbers and commas
