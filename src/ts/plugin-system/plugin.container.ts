@@ -105,7 +105,7 @@ export default class PluginContainer {
      *
      * @returns {PluginContainer}
      */
-    delete(name: string, selector: string): PluginContainer
+    delete(name: string, selector: string): PluginContainer | boolean
     {
         if (!selector) {
             return this.storage.delete(name);

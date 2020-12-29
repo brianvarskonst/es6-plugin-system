@@ -1,8 +1,8 @@
-const TIMEZONE_COOKIE = 'timezone';
-
 import CookieStorageHelper from './../../helper/storage/cookie-storage.helper';
 
-export default class TimezoneUtil {
+export default class Timezone {
+
+    public static cookie = 'timezone';
 
     /**
      * Constructor
@@ -13,7 +13,7 @@ export default class TimezoneUtil {
         }
 
         CookieStorageHelper.setItem(
-            TIMEZONE_COOKIE,
+            Timezone.cookie,
             Intl.DateTimeFormat().resolvedOptions().timeZone,
             30
         );

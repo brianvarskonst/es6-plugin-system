@@ -5,9 +5,10 @@
 */
 export default class PluginConfigRegistry {
 
-    constructor() {
-        this._registry = new Map();
-    }
+    private registry: Map<any, any> = new Map();
+
+    constructor()
+    {}
 
     /**
      * adds a plugin to the registry
@@ -18,8 +19,10 @@ export default class PluginConfigRegistry {
      *
      * @returns {Map<any, any>}
      */
-    set(pluginName, configName, config) {
-        const pluginConfigs = this._createPluginConfigRegistry(pluginName);
+    public set(pluginName: string, configName: string, config: object): Map<any, any>
+    {
+        const pluginConfigs = this.createPluginConfigRegistry(pluginName);
+
         return pluginConfigs.set(configName, config);
     }
 
@@ -31,8 +34,10 @@ export default class PluginConfigRegistry {
      *
      * @returns {any}
      */
-    get(pluginName, configName = false) {
-        const pluginConfigs = this._createPluginConfigRegistry(pluginName);
+    public get(pluginName: string, configName: string | boolean = false): any
+    {
+        const pluginConfigs = this.createPluginConfigRegistry(pluginName);
+
         if (configName && pluginConfigs.has(configName)) {
             return pluginConfigs.get(configName);
         } else if (configName) {
@@ -50,8 +55,10 @@ export default class PluginConfigRegistry {
      *
      * @returns {PluginConfigRegistry}
      */
-    delete(pluginName, configName) {
-        const pluginConfigs = this._createPluginConfigRegistry(pluginName);
+    public delete(pluginName: string, configName: string): PluginConfigRegistry
+    {
+        const pluginConfigs = this.createPluginConfigRegistry(pluginName);
+
         pluginConfigs.delete(configName);
 
         return this;
@@ -62,8 +69,9 @@ export default class PluginConfigRegistry {
      *
      * @returns {PluginConfigRegistry}
      */
-    clear() {
-        this._registry.clear();
+    public clear(): PluginConfigRegistry
+    {
+        this.registry.clear();
 
         return this;
     }
@@ -75,17 +83,18 @@ export default class PluginConfigRegistry {
      * @param {string} pluginName
      *
      * @returns {Map<any, any>}
-     * @private
      */
-    _createPluginConfigRegistry(pluginName) {
+    private createPluginConfigRegistry(pluginName) : Map<any, any>
+    {
         if (!pluginName) {
             throw new Error('A plugin name must be given!');
         }
-        if (!this._registry.has(pluginName)) {
-            this._registry.set(pluginName, new Map());
+
+        if (!this.registry.has(pluginName)) {
+            this.registry.set(pluginName, new Map());
         }
 
-        return this._registry.get(pluginName);
+        return this.registry.get(pluginName);
     }
 
 }

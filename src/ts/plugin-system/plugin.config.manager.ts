@@ -2,8 +2,10 @@ import PluginConfigRegistry from './plugin.config.registry';
 
 class PluginConfigManagerSingleton {
 
+    private readonly registry: PluginConfigRegistry;
+
     constructor() {
-        this._registry = new PluginConfigRegistry();
+        this.registry = new PluginConfigRegistry();
     }
 
     /**
@@ -15,8 +17,9 @@ class PluginConfigManagerSingleton {
      *
      * @returns {any}
      */
-    get(pluginName, configName = false) {
-        return this._registry.get(pluginName, configName);
+    public get(pluginName: string, configName: any | boolean = false): any
+    {
+        return this.registry.get(pluginName, configName);
     }
 
     /**
@@ -29,8 +32,9 @@ class PluginConfigManagerSingleton {
      *
      * @returns {any}
      */
-    add(pluginName, configName, config) {
-        return this._registry.set(pluginName, configName, config);
+    public add(pluginName: string, configName: any | boolean, config: any): any
+    {
+        return this.registry.set(pluginName, configName, config);
     }
 
     /**
@@ -41,8 +45,9 @@ class PluginConfigManagerSingleton {
      *
      * @returns {any}
      */
-    remove(pluginName, configName) {
-        return this._registry.delete(pluginName, configName);
+    public remove(pluginName: string, configName: any | boolean): any
+    {
+        return this.registry.delete(pluginName, configName);
     }
 
     /**
@@ -50,17 +55,19 @@ class PluginConfigManagerSingleton {
      *
      * @returns {Map<any, any>}
      */
-    getRegistry() {
-        return this._registry
+    public getRegistry(): Map<any, any>
+    {
+        return this.registry
     }
-
 }
 
 /**
  * Create the PluginConfigManager instance.
  * @type {Readonly<PluginConfigManagerSingleton>}
  */
-export const PluginConfigManagerInstance = Object.freeze(new PluginConfigManagerSingleton());
+export const PluginConfigManagerInstance = Object.freeze(
+    new PluginConfigManagerSingleton()
+);
 
 class PluginConfigManager {
 
@@ -73,7 +80,8 @@ class PluginConfigManager {
      *
      * @returns {any}
      */
-    static get(pluginName, configName = false) {
+    public static get(pluginName: string, configName: any | boolean = false)
+    {
         return PluginConfigManagerInstance.get(pluginName, configName);
     }
 
@@ -87,7 +95,8 @@ class PluginConfigManager {
      *
      * @returns {any}
      */
-    static add(pluginName, configName, config) {
+    public static add(pluginName: string, configName: any | boolean, config: any): any
+    {
         return PluginConfigManagerInstance.add(pluginName, configName, config);
     }
 
@@ -99,7 +108,8 @@ class PluginConfigManager {
      *
      * @returns {any}
      */
-    static remove(pluginName, configName) {
+    public static remove(pluginName: string, configName: any | boolean): any
+    {
         return PluginConfigManagerInstance.remove(pluginName, configName);
     }
 
@@ -108,7 +118,8 @@ class PluginConfigManager {
      *
      * @returns {Map<any, any>}
      */
-    static getRegistry() {
+    public static getRegistry(): Map<any, any>
+    {
         return PluginConfigManagerInstance.getRegistry();
     }
 
